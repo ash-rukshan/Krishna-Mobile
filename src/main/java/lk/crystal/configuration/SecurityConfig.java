@@ -23,118 +23,116 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-  private final String[] ALL_PERMIT_URL = {"/favicon.ico", "/img/**", "/css/**", "/js/**", "/webjars/**",
-      "/login", "/select/**", "/", "/index"};
+    private final String[] ALL_PERMIT_URL = {"/favicon.ico", "/img/**", "/css/**", "/js/**", "/webjars/**",
+            "/login", "/select/**", "/", "/index"};
 
-  @Bean
-  public UserDetailsServiceImpl userDetailsService() {
-    return new UserDetailsServiceImpl();
-  }
+    @Bean
+    public UserDetailsServiceImpl userDetailsService() {
+        return new UserDetailsServiceImpl();
+    }
 
-  @Bean
-  public BCryptPasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-  @Bean
-  public DaoAuthenticationProvider authenticationProvider() {
-    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-    authProvider.setUserDetailsService(userDetailsService());
-    authProvider.setPasswordEncoder(passwordEncoder());
-    return authProvider;
-  }
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
+    }
 
-  /*Session management - bean start*/
-  @Bean
-  public HttpSessionEventPublisher httpSessionEventPublisher() {
-    return new HttpSessionEventPublisher();
-  }
+    /*Session management - bean start*/
+    @Bean
+    public HttpSessionEventPublisher httpSessionEventPublisher() {
+        return new HttpSessionEventPublisher();
+    }
 
-  @Bean
-  public SessionRegistry sessionRegistry() {
-    return new SessionRegistryImpl();
-  }
-  /*Session management - bean end*/
+    @Bean
+    public SessionRegistry sessionRegistry() {
+        return new SessionRegistryImpl();
+    }
+    /*Session management - bean end*/
 
-  @Bean
-  public AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
-    return new CustomAuthenticationSuccessHandler();
-  }
+    @Bean
+    public AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
+        return new CustomAuthenticationSuccessHandler();
+    }
 
-  @Bean
-  public LogoutSuccessHandler customLogoutSuccessHandler() {
-    return new CustomLogoutSuccessHandler();
-  }
+    @Bean
+    public LogoutSuccessHandler customLogoutSuccessHandler() {
+        return new CustomLogoutSuccessHandler();
+    }
 
-  @Override
-  protected void configure(AuthenticationManagerBuilder auth) {
-    auth.authenticationProvider(authenticationProvider());
-  }
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) {
+        auth.authenticationProvider(authenticationProvider());
+    }
 
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
-      // http.csrf().disable();
-      // http.authorizeRequests().antMatchers("/").permitAll();
-    // For developing easy to give permission all lin
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        // http.csrf().disable();
+        // http.authorizeRequests().antMatchers("/").permitAll();
+        // For developing easy to give permission all lin
 // {"ADMIN","PROCUREMENT_MANAGER","CASHIER","MANAGER","HR_MANAGER","ACCOUNT_MANAGER"}
 // noraml man security desable karanna kiwwoth pahala tika comment karala ihala tika uncomment ka
-    //security active karanne eke anik pettha
-http.
-       authorizeRequests ()
-               .antMatchers(ALL_PERMIT_URL).permitAll()
-               .antMatchers("/category/**").hasAnyRole("ADMIN","PROCUREMENT_MANAGER","CASHIER","MANAGER")
+        //security active karanne eke anik pettha
+        http
+                .csrf().disable().
+                authorizeRequests()
+                .antMatchers(ALL_PERMIT_URL).permitAll()
+                .antMatchers("/category/**").hasAnyRole("ADMIN", "PROCUREMENT_MANAGER", "CASHIER", "MANAGER")
 
-               .antMatchers("/discountRatio/**").hasAnyRole("PROCUREMENT_MANAGER","MANAGER")
-                   .antMatchers("/brand/**").hasAnyRole("PROCUREMENT_MANAGER","MANAGER")
-                   .antMatchers("/itemColor/**").hasAnyRole("PROCUREMENT_MANAGER","MANAGER")
-               .antMatchers("/employee/**").hasAnyRole("MANAGER","HR_MANAGER" ,"ADMIN")
-               .antMatchers("/goodReceivedNote/**").hasAnyRole("MANAGER","PROCUREMENT_MANAGER")
-               .antMatchers("/payment/**").hasAnyRole("MANAGER","ACCOUNT_MANAGER")
-               .antMatchers("/purchaseOrder/**").hasAnyRole("MANAGER","PROCUREMENT_MANAGER")
-               .antMatchers("/role/**").hasAnyRole("MANAGER","HR_MANAGER","ADMIN")
-               .antMatchers("/supplier/**").hasAnyRole("MANAGER","PROCUREMENT_MANAGER")
-               .antMatchers("/supplierItem/**").hasAnyRole("MANAGER","PROCUREMENT_MANAGER")
-               .antMatchers("/user/**").hasAnyRole("MANAGER","HR_MANAGER","ADMIN")
-                   .antMatchers("/invoice/**").hasAnyRole("MANAGER","CASHIER")
-               .anyRequest()
-               .authenticated()
-        .and()
-       // Login form
-       .formLogin()
+                .antMatchers("/discountRatio/**").hasAnyRole("PROCUREMENT_MANAGER", "MANAGER")
+                .antMatchers("/brand/**").hasAnyRole("PROCUREMENT_MANAGER", "MANAGER")
+                .antMatchers("/itemColor/**").hasAnyRole("PROCUREMENT_MANAGER", "MANAGER")
+                .antMatchers("/employee/**").hasAnyRole("MANAGER", "HR_MANAGER", "ADMIN")
+                .antMatchers("/goodReceivedNote/**").hasAnyRole("MANAGER", "PROCUREMENT_MANAGER")
+                .antMatchers("/payment/**").hasAnyRole("MANAGER", "ACCOUNT_MANAGER")
+                .antMatchers("/purchaseOrder/**").hasAnyRole("MANAGER", "PROCUREMENT_MANAGER")
+                .antMatchers("/role/**").hasAnyRole("MANAGER", "HR_MANAGER", "ADMIN")
+                .antMatchers("/supplier/**").hasAnyRole("MANAGER", "PROCUREMENT_MANAGER")
+                .antMatchers("/supplierItem/**").hasAnyRole("MANAGER", "PROCUREMENT_MANAGER")
+                .antMatchers("/user/**").hasAnyRole("MANAGER", "HR_MANAGER", "ADMIN")
+                .antMatchers("/invoice/**").hasAnyRole("MANAGER", "CASHIER")
+                .anyRequest()
+                .authenticated()
+                .and()
+                // Login form
+                .formLogin()
 
-                   .loginPage("/login")
-                   .loginProcessingUrl("/login")
-                   //Username and password for validation
-                   .usernameParameter("username")
-                   .passwordParameter("password")
-                   .successHandler(customAuthenticationSuccessHandler())
-                   .failureUrl("/login?error")
+                .loginPage("/login")
+                .loginProcessingUrl("/login")
+                //Username and password for validation
+                .usernameParameter("username")
+                .passwordParameter("password")
+                .successHandler(customAuthenticationSuccessHandler())
+                .failureUrl("/login?error")
+                .and()
+                //Logout controlling
+                .logout()
 
-       //Logout controlling
-       .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessHandler(customLogoutSuccessHandler())
+                .deleteCookies("JSESSIONID")
+                .invalidateHttpSession(true)
+                .clearAuthentication(true)
+                .and()
+                .headers()
+                .addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN))
+                .and()
+                //session management
+                .sessionManagement()
 
-                   .logoutUrl("/logout")
-                   .logoutSuccessHandler(customLogoutSuccessHandler())
-                   .deleteCookies("JSESSIONID")
-                   .invalidateHttpSession(true)
-                   .clearAuthentication(true)
-        .and()
-       //session management
-       .sessionManagement()
+                .sessionFixation().migrateSession()
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                .invalidSessionUrl("/login")
+                .maximumSessions(6)
+                .expiredUrl("/logout")
+                .sessionRegistry(sessionRegistry());
 
-                   .sessionFixation().migrateSession()
-                   .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                   .invalidSessionUrl("/login")
-                   .maximumSessions(6)
-                   .expiredUrl("/logout")
-                   .sessionRegistry(sessionRegistry())
-        .and()
-       //Cross site disable
-   .csrf(AbstractHttpConfigurer::disable)
-   .exceptionHandling().and()
-   .headers()
-   .addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN));
-
-  }
+    }
 }
 
