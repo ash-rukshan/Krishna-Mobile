@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head  data-th-replace="~{fragments/header :: headerFragment}">
+    <meta charset="UTF-8">
+    <title>Thymeleaf Springboot </title>
+</head>
+<body class="sb-nav-fixed" style="background-image: url(../img/dashboard.jpg);">
+<nav  data-th-replace="~{fragments/navBar :: navBarFragment}"></nav>
+<div id="layoutSidenav">
+    <div  data-th-replace="~{fragments/sideNav :: sideNavFragment}">
+    </div>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col"><h1 class="mt-4">Dashboard</h1></div>
+                    <div class="col text-right"> <button class="btn btn-danger" type="button" data-toggle="modal" href="#myModal">
+                        <i class="fa fa-bell" aria-hidden="true"></i> Low Stock Items <span data-th-text="${'(' + ropList.size() + ')'}"></span>
+                    </button> </div>
+                </div>
+                <!--Tiles-->
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item active">Home Tabs</li>
+                </ol>
+                <div class="row">
+
+
+                    <!--Employee Card-->
+                    <div  data-sec-authorize="hasAnyAuthority('ROLE_MANAGER', 'ROLE_HR_MANAGER' , 'ROLE_ADMIN')" class="dcard">
+                        <div class="card__inner">
+                            <div class="card__face card__face--back">
+                                <div class="card__content">
+                                    <div class="card__header" style="background-image: linear-gradient(to bottom left, var(--light) 10%, var(--blue) 10%);">
+                                        <img src="../img/pp.jpg" alt="" class="pp" />
+                                        <h2>Manage Employees</h2>
+                                    </div>
+                                    <div class="card__body">
+                                        <a href="/employee">
+                                            <div class="body">
+                                                <div class="text-dark">Manage Employees</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Employee
+                    <div data-sec-authorize="hasAnyAuthority('ROLE_MANAGER', 'ROLE_HR_MANAGER' , 'ROLE_ADMIN')" class="col-xl-4 col-md-6">
+                        <div class="card bg-primary text-white mb-4">
+                            <div class="card-header font-weight-bold">
+                                <i class="fas fa-user-tie mr-2" style="font-size: 16px" aria-hidden="true"></i>Employee
+                            </div>
+                            <div class="card-body">
+                                <a href="/employee">
+                                    <div class="body">
+                                        <div class="text-white">Manage Employees</div>
+                                    </div>
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>-->
+                    <!--Item Card-->
+                    <div class="dcard" data-sec-authorize="hasAnyAuthority('ROLE_MANAGER', 'ROLE_CASHIER', 'ROLE_PROCUREMENT_MANAGER')">
+                        <div class="card__inner">
+                            <div class="card__face card__face--back">
+                                <div class="card__content">
+                                    <div class="card__header" style="background-image: linear-gradient(to bottom left, var(--light) 10%, var(--red) 10%);" >
+                                        <img src="../img/items.png" alt="" class="pp" />
+                                        <h2>Items</h2>
+                                    </div>
+                                    <div class="card__body">
+                                        <a href="/item">
+                                            <div class="body">
+                                                <div class="text-dark">Manage Items</div>
+                                            </div>
+                                        </a>
+                                        <a href="/category">
+                                            <div class="body">
+                                                <div class="text-dark">Manage Categories</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Item
+                    <div class="col-xl-4 col-md-6">
+                        <div class="card bg-danger text-white mb-4">
+                            <div class="card-header font-weight-bold">
+                                <i class="fa fa-shopping-cart mr-2" style="font-size: 16px" aria-hidden="true"></i>Item
+                            </div>
+                            <div class="card-body">
+                                <a class href="/item">
+                                    <div class="body">
+                                        <div class="text-white">Manage Items</div>
+                                    </div>
+                                </a>
+                                <a class href="/category">
+                                    <div class="body">
+                                        <div class="text-white">Manage Categories</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>-->
+                    <!--Supplier Card-->
+                    <div class="dcard" data-sec-authorize="hasAnyAuthority('ROLE_MANAGER', 'ROLE_CASHIER', 'ROLE_PROCUREMENT_MANAGER')">
+                        <div class="card__inner">
+                            <div class="card__face card__face--back">
+                                <div class="card__content">
+                                    <div class="card__header" style="background-image: linear-gradient(to bottom left, var(--light) 10%, var(--green) 10%);" >
+                                        <img src="../img/suplier.jpg" alt="" class="pp" />
+                                        <h2>Supplier</h2>
+                                    </div>
+                                    <div class="card__body">
+                                        <a href="/supplier">
+                                            <div class="body">
+                                                <div class="text-dark">Manage Suppliers</div>
+                                            </div>
+                                        </a>
+                                        <a href="/supplier/add">
+                                            <div class="body">
+                                                <div class="text-dark">Add Supplier</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Supplier
+                    <div class="col-xl-4 col-md-6">
+                        <div class="card bg-success text-white mb-4">
+                            <div class="card-header font-weight-bold">
+                                <i class="fas fa-truck mr-2" style="font-size: 16px" aria-hidden="true"></i></i>Supplier
+                            </div>
+                            <div class="card-body">
+                                <a href="/supplier">
+                                    <div class="body">
+                                        <div class="text-white">Manage Suppliers</div>
+                                    </div>
+                                </a>
+                                <a href="/supplier/add">
+                                    <div class="body">
+                                        <div class="text-white">Add Supplier</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>-->
+                    <!--Customer Card-->
+                    <div class="dcard" data-sec-authorize="hasAnyAuthority('ROLE_MANAGER', 'ROLE_CASHIER')">
+                        <div class="card__inner">
+                            <div class="card__face card__face--back">
+                                <div class="card__content">
+                                    <div class="card__header" style="background-image: linear-gradient(to bottom left, var(--light) 10%, var(--yellow) 10%);" >
+                                        <img src="../img/customer.png" alt="" class="pp"/>
+                                        <h2>Customers</h2>
+                                    </div>
+                                    <div class="card__body">
+                                        <a href="/customer">
+                                            <div class="body">
+                                                <div class="text-dark">Manage Customers</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row ">
+                    <!--Customer
+                    <div class="col-xl-4 col-md-6" data-sec-authorize="hasAnyAuthority('ROLE_MANAGER', 'ROLE_CASHIER')">
+                        <div class="card bg-secondary text-white mb-4">
+                            <div class="card-header font-weight-bold">
+                                <i class="far fa-handshake mr-2" style="font-size: 16px" aria-hidden="true"></i>Customer
+                            </div>
+                            <div class="card-body">
+                                <a href="/customer">
+                                    <div class="body">
+                                        <div class="text-white">Manage Customers</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>-->
+                    <!--Invoice Card-->
+                    <div class="dcard" data-sec-authorize="hasAnyAuthority('ROLE_MANAGER', 'ROLE_PROCUREMENT_MANAGER' ,'ROLE_ACCOUNT_MANAGER' , 'ROLE_CASHIER')">
+                        <div class="card__inner">
+                            <div class="card__face card__face--back">
+                                <div class="card__content">
+                                    <div class="card__header" style="background-image: linear-gradient(to bottom left, var(--light) 10%, var(--teal) 10%);" >
+                                        <img src="../img/invoice.png" alt="" class="pp"/>
+                                        <h2>Invoice</h2>
+                                    </div>
+                                    <div class="card__body">
+                                        <a href="/invoice/add">
+                                            <div class="body">
+                                                <div class="text-dark">New Invoice</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Invoice
+                    <div class="col-xl-4 col-md-6" data-sec-authorize="hasAnyAuthority('ROLE_MANAGER', 'ROLE_PROCUREMENT_MANAGER' ,'ROLE_ACCOUNT_MANAGER' , 'ROLE_CASHIER')">
+                        <div class="card bg-info text-white mb-4" >
+                            <div class="card-header font-weight-bold">
+                                <i class="fas fa-file-invoice-dollar mr-2" style="font-size: 16px" aria-hidden="true"></i></i>Invoice
+                            </div>
+                            <div class="card-body">
+                                <a href="/invoice/add">
+                                    <div class="body">
+                                        <div class="text-white">New Invoice</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>-->
+                    <!--Purchase Card-->
+                    <div class="dcard" data-sec-authorize="hasAnyAuthority('ROLE_MANAGER', 'ROLE_PROCUREMENT_MANAGER')">
+                        <div class="card__inner">
+                            <div class="card__face card__face--back">
+                                <div class="card__content">
+                                    <div class="card__header" style="background-image: linear-gradient(to bottom left, var(--light) 10%, var(--orange) 10%);" >
+                                        <img src="../img/purchase.png" alt="" class="pp"/>
+                                        <h2>Purchase</h2>
+                                    </div>
+                                    <div class="card__body">
+                                        <a href="/purchaseOrder">
+                                            <div class="body">
+                                                <div class="text-dark">Manage Supplier Orders</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Purchase
+                    <div class="col-xl-4 col-md-6" data-sec-authorize="hasAnyAuthority('ROLE_MANAGER', 'ROLE_PROCUREMENT_MANAGER')">
+                        <div class="card bg-warning text-white mb-4">
+                            <div class="card-header font-weight-bold">
+                               <i class="fas fa-truck-loading mr-2" style="font-size: 16px" aria-hidden="true"></i>Purchase
+                            </div>
+                            <div class="card-body">
+                                <a href="/purchaseOrder">
+                                    <div class="body">
+                                        <div class="text-white">Manage Supplier Orders</div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>-->
+                </div>
+                <!--*********************************Test Table*****************************************-->
+
+                <!--  data area showing-->
+                <div class="modal fade" id="myModal">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header bg-light">
+                                <h6 class="modal-title">Low stock item list - Please order as needed !</h6>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                            <div class="" data-th-if="${not #lists.isEmpty(ropList)}" >
+                                <div class="col" >
+                                    <table class="table table-sm table-hover table-striped  text-sm" >
+                                        <thead >
+                                        <tr >
+                                            <th > Index</th >
+                                            <th > Item Name</th >
+                                            <th > ROP</th >
+                                            <th > Quantity</th >
+                                            <th > Price</th >
+                                            <th class="text-right"> Modify</th >
+                                        </tr >
+                                        </thead >
+                                        <tbody >
+                                        <tr data-th-each="ledger, rowCount : ${ropList}" >
+                                            <td data-th-text="${rowCount.count}" ></td >
+                                            <td data-th-text="${ledger.item.name}" ></td >
+                                            <td data-th-text="${ledger.item.rop}" ></td >
+                                            <td data-th-text="${ledger.quantity}" ></td >
+                                            <td data-th-text="${ledger.sellPrice}" ></td >
+
+                                            <td class="text-right">
+                                                <a data-th-href="${'/purchaseOrder/supplier/' + ledger.goodReceivedNote.purchaseOrder.supplier.id}"
+                                                   class="btn btn-outline-secondary btn-sm" ><i
+                                                        class="fa fa-folder-open" style="font-size: 15px" ></i > Purchase Order</a >
+                                            </td >
+                                        </tr >
+                                        </tbody >
+                                    </table >
+                                </div >
+                            </div >
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+
+
+            </div>
+        </main>
+        <!--footer include-->
+        <div  data-th-replace="~{fragments/footer :: footerFragment}"></div>
+        <!--script include-->
+        <div  data-th-replace="~{fragments/script :: scriptFragment}"></div>
+    </div>
+
+</div>
+
+</body>
+</html>
+

@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en" >
+<!--/* Styles, meta data, and title are included */-->
+<head data-th-replace="~{fragments/header :: headerFragment}" >
+  <meta charset="UTF-8" >
+  <title >Thymeleaf Springboot </title >
+</head >
+<body >
+<nav data-th-replace="~{fragments/navBar :: navBarFragment}" ></nav >
+<link data-th-href="@{/css/combo-box-search.css}" media="all" rel="stylesheet" type="text/css" />
+<link data-th-href="@{/css/modal.css}" media="all" rel="stylesheet" type="text/css" />
+<!--Creates the popup body-->
+<div class="popup-overlay" >
+  <!--Creates the popup content-->
+  <div class="popup-content" >
+    <div class="form-row" >
+      <!--item name-->
+      <div class="form-group col-md-6" >
+        <label for="itemName" class="text-dark" >Item Name :</label >
+        <input id="itemName" class="form-control" type="text" readonly />
+      </div >
+      <!--Available Quantity-->
+      <div class="form-group col-md-6" >
+        <label for="abQuantity" class="text-dark" >Available Quantity :</label >
+        <input id="abQuantity" class="form-control" type="text" readonly />
+      </div >
+    </div >
+    <div class="form-row" >
+      <!--Expired date-->
+      <div class="form-group col-md-6" >
+        <label for="exDate" class="text-dark" >Expired Date :</label >
+        <input id="exDate" class="form-control" type="text" readonly />
+      </div >
+      <!--Request count-->
+      <div class="form-group col-md-6" >
+        <label for="sellPriceModal" class="text-dark" >Sell Price :</label >
+        <input id="sellPriceModal" class="form-control" type="number" min="0" step="0.01" readonly />
+      </div >
+    </div >
+    <!--  discount ratio-->
+    <div class="form-row" >
+      <!--Expired date-->
+      <div class="form-group col-md-6" >
+        <label for="requestCount" class="text-dark" >Request Count :</label >
+        <input id="requestCount" class="form-control" type="number" step="1" />
+      </div >
+      <div class="form-group col-md-6" >
+        <label class="control-label" for="discountRatio" >Discount Ratio :</label >
+
+        <select id="discountRatio"
+                class="form-control"
+                required >
+          <option value="" >Please select</option >
+          <option data-th-each="discountRatio : ${discountRatios}"
+                  data-th-text="${discountRatio.amount}"
+                  data-th-value="${discountRatio.id}" >
+            Please select
+          </option >
+        </select >
+      </div >
+    </div >
+    <div class="form-row" >
+      <!--Discount Price-->
+      <div class="form-group col-md-6" >
+        <label for="discountPrice" class="text-dark" >Discount Price :</label >
+        <input id="discountPrice" class="form-control" type="number" step="1" readonly />
+      </div >
+      <!--Total -->
+      <div class="form-group col-md-6" >
+        <label for="totalModal" class="text-dark" >Total:</label >
+        <input id="totalModal" class="form-control" type="number" step="0.01" readonly />
+        <input id="ledgerId" class="form-control" type="hidden" hidden />
+      </div >
+    </div >
+    <!--button area-->
+    <div class="form-row" >
+      <div class="col-6" ></div >
+      <div class="col " >
+        <button class="btn btn-danger" id="close" >Close</button >
+      </div >
+      <div class="col " >
+        <button class="btn btn-success" id="addModal" >Add</button >
+      </div >
+    </div >
+  </div >
+</div >
+
+<!--<div class="container-fluid mt-3" >-->
+<div class="container" >
+  <!--heading Area-->
+  <div class="container-fluid " >
+    <div class="row text-center formManagement border-info" >
+      <!--ViewList Button-->
+      <div class="col" >
+        <a href="/invoice" class="btn btn-success" tabindex="1" >
+          <i class="fa fa-list" style="font-size: 20px" ></i >&nbsp;&nbsp;View List
+        </a >
+      </div >
+      <!--Customer Name-->
+      <div class="col" >
+        <h2 class="text-dark text-center" >
+          <strong >
+            ADD NEW INVOICE
+          </strong >
+        </h2 >
+      </div >
+      <!--Home Button-->
+      <div class="col" >
+        <a class="btn btn-success" href="/home" tabindex="2" >
+          <i class="fa fa-home" style="font-size: 20px" ></i > Home
+        </a >
+      </div >
+    </div >
+  </div >
+  <!--details-->
+
+  <div class="container formBorder" >
+    <form action="/invoice" method="post" data-th-object="${invoice}" >
+      <!--customer list-->
+      <div class="form-group" >
+        <!--Customers-->
+        <div class="form-row text-right" >
+          <div class="col-md-2" >
+            <label class="control-label" for="customer " >Customer :</label >
+          </div >
+          <div class="col-md-10" >
+            <select id="customer " data-th-field="*{customer}" class="form-control"
+                    tabindex="9" >
+              <option value="" >Please select</option >
+              <option data-th-each="customer : ${customers}"
+                      data-th-text="${customer.name+'  '+customer.mobile}"
+                      data-th-value="${customer.id}" >
+                Please select
+              </option >
+            </select >
+          </div >
+        </div >
+      </div >
+      <!--ledgers will list-->
+      <div class="form-group" >
+        <!--Ledgers item-->
+        <div class="form-row " >
+          <div class="col-2 text-right" >
+            <label class="control-label" for="item" >Items :</label >
+          </div >
+          <div class="col-10 text-left" >
+            <select id="item" class="form-control" tabindex="9" >
+              <option value="" ></option >
+              <option data-th-each="ledger : ${ledgers}"
+                      data-th-text="${'Item Name: '+ledger.item.name+'  Sell Price : '+ledger.item.sellPrice+'
+                                      Available quantity : '+ledger.quantity+'  Expired Date : '+ledger.expiredDate}"
+                      data-th-value="${ledger.id}" >Please select
+              </option >
+            </select >
+          </div >
+        </div >
+      </div >
+
+      <!--selected ledger items-->
+      <div class="form-group" >
+        <div class="form-row" >
+          <div class="container" >
+            <div class="col" >
+              <table class="table table-hover table-striped " id="myTable" >
+                <thead class="thead-dark" >
+                <tr >
+                  <th >Index</th >
+                  <th >Item Name</th >
+                  <th >Expire Date</th >
+                  <th >Available Quantity</th >
+                  <th >Unit Price</th >
+                  <th >Quantity</th >
+                  <th >Discount Amount</th >
+                  <th >Line Total</th >
+                  <th >Modify</th >
+                </tr >
+                </thead >
+                <tbody class="table-warning">
+
+                </tbody >
+                <tfoot >
+                <tr >
+                  <th colspan="4" class="text-right" ><label for="total" >Total</label ></th >
+                  <th ><input id="total" type="text" class="form-control" name="totalPrice"
+                              placeholder="Total Price" readonly >
+                  </th >
+                </tr >
+                </tfoot >
+              </table >
+            </div >
+          </div >
+        </div >
+      </div >
+       <!--Payment Section-->
+      <div class="form-group" >
+        <!--Payment method and total amount-->
+        <div class="form-row text-right" >
+          <!--payment method-->
+          <div class="col-md-6 " >
+            <div class="form-row text-right" >
+              <div class="col-md-4" >
+                <label data-th-for="${paymentMethod}" >Payment Method:</label >
+              </div >
+              <div class="col-md-8 text-left" >
+                <div class="custom-control custom-checkbox custom-control-inline "
+                     data-th-each="paymentMethod,index : ${paymentMethods}" >
+                  <input class="custom-control-input" required
+                         data-th-name="${'paymentMethod'}"
+                         data-th-value="${paymentMethod}"
+                         data-th-id="${index.index}+${paymentMethod}" type="radio"
+                  />
+                  <label class="custom-control-label"
+                         data-th-for="${index.index}+${paymentMethod}"
+                         data-th-text="${paymentMethod.paymentMethod}" > radio
+                  </label >
+                </div >
+              </div >
+            </div >
+          </div >
+          <!--Discount-->
+          <div class="col-md-6 " >
+            <!--<div class="form-row text-right" >
+              <div class="col-md-4" >
+                <label class="control-label" for="discountRatio" >Discount Ratio :</label >
+              </div >
+              <div class="col-md-8" >
+                <select id="discountRatio" data-th-field="*{discountRatio}"
+                        class="form-control"
+                        tabindex="9"
+                        required >
+                  <option value="" >Please select</option >
+                  <option data-th-each="discountRatio : ${discountRatios}"
+                          data-th-text="${discountRatio.amount}"
+                          data-th-value="${discountRatio.id}" >
+                    Please select
+                  </option >
+                </select >
+              </div >
+            </div >
+          </div >
+        </div >-->
+
+            <div class="form-row" >
+              <!--Total Amount-->
+              <div class="col-md-6 " >
+                <div class="form-row text-right" >
+                  <div class="col-md-4" >
+                    <label class="control-label" for="totalAmount" >Total Amount :</label >
+                  </div >
+                  <div class="col-md-8" >
+                    <input id="totalAmount" data-th-field="*{totalAmount}" class="form-control"
+                           tabindex="6"
+                           type="text"
+                           required readonly />
+                    <span class="error" id="totalAmountError" data-th-errors="*{balance}"
+                          data-th-if="${#fields.hasErrors('totalAmount')}" ></span >
+                  </div >
+                </div >
+              </div >
+              <!--Discount Amount-->
+              <div class="col-md-6 " >
+                <div class="form-row text-right" >
+                  <div class="col-md-4" >
+                    <label class="control-label " for="discountAmount" >Discount Amount :</label >
+                  </div >
+                  <div class="col-md-8" >
+                    <input id="discountAmount" data-th-field="*{discountAmount}"
+                           class="form-control" tabindex="6"
+                           type="text"
+                           required readonly />
+                    <span class="error" id="nicError" data-th-errors="*{discountAmount}"
+                          data-th-if="${#fields.hasErrors('discountAmount')}" >Error
+                                                               Discount Amount</span >
+                  </div >
+                </div >
+              </div >
+            </div >
+            <!--Amount tendered and balance  -->
+            <div class="form-row text-right" id="cashPaymentBlock" >
+              <!--Amount Tendered-->
+              <div class="col-md-6 " >
+                <div class="form-row text-right" >
+                  <div class="col-md-4" >
+                    <label class="control-label" for="amountTendered" >Amount Tendered :</label >
+                  </div >
+                  <div class="col-md-8" >
+                    <input id="amountTendered" data-th-field="*{amountTendered}"
+                           class="form-control"
+                           tabindex="6" type="number" min="0" step="0.01"
+                           required />
+                    <span class="error" data-th-errors="*{amountTendered}"
+                          data-th-if="${#fields.hasErrors('amountTendered')}" ></span >
+                  </div >
+                </div >
+              </div >
+              <!--Balance-->
+              <div class="col-md-6 " >
+                <div class="form-row text-right" >
+                  <div class="col-md-4" >
+                    <label class="control-label" for="balance" >Balance :</label >
+                  </div >
+                  <div class="col-md-8" >
+                    <input id="balance" data-th-field="*{balance}" class="form-control"
+                           tabindex="6"
+                           type="text"
+                           required readonly />
+                    <span class="error" id="balanceError" data-th-errors="*{balance}"
+                          data-th-if="${#fields.hasErrors('balance')}" ></span >
+                  </div >
+                </div >
+              </div >
+            </div >
+            <!-- Card Payment -> Bank and card Number -->
+            <div class="form-row text-right" id="bankNameBlock" >
+              <!--Bank -->
+              <div class="col-md-6 " >
+                <div class="form-row text-right" >
+                  <div class="col-md-4" >
+                    <label class="control-label" for="bankName" >Bank Name :</label >
+                  </div >
+                  <div class="col-md-8" >
+                    <input id="bankName" data-th-field="*{bankName}"
+                           class="form-control"
+                           tabindex="6" type="text" />
+                    <span class="error" data-th-errors="*{bankName}"
+                          data-th-if="${#fields.hasErrors('bankName')}" ></span >
+                  </div >
+                </div >
+              </div >
+              <!--card number-->
+              <div class="col-md-6 " >
+                <div class="form-row text-right" >
+                  <div class="col-md-4" >
+                    <label class="control-label" for="cardNumber" >Card Number :</label >
+                  </div >
+                  <div class="col-md-8" >
+                    <input id="cardNumber" data-th-field="*{cardNumber}" class="form-control"
+                           tabindex="6"
+                           type="text" />
+                    <span class="error" data-th-errors="*{cardNumber}"
+                          data-th-if="${#fields.hasErrors('cardNumber')}" ></span >
+                  </div >
+                </div >
+              </div >
+            </div >
+          </div >
+        </div >
+      </div >
+      <!--remarks and invoice print or not-->
+      <div class="form-group" >
+        <div class="form-row" >
+          <div class="col-md-6" >
+            <!--invoice print or not-->
+            <div class="form-row text-right" >
+              <div class="col-md-4" >
+                <label data-th-for="${invoicePrintOrNot}" >Invoice Print or Not:</label >
+              </div >
+              <div class="col-md-8 text-left" >
+                <div class="custom-control custom-checkbox custom-control-inline "
+                     data-th-each="invoicePrintOrNot,index : ${invoicePrintOrNots}" >
+                  <input class="custom-control-input"
+                         data-th-name="${'invoicePrintOrNot'}"
+                         data-th-value="${invoicePrintOrNot}"
+                         data-th-id="${index.index}+${invoicePrintOrNot}" type="radio"
+                  />
+                  <label class="custom-control-label"
+                         data-th-for="${index.index}+${invoicePrintOrNot}"
+                         data-th-text="${invoicePrintOrNot.invoicePrintOrNot}" > radio
+                  </label >
+                </div >
+              </div >
+            </div >
+          </div >
+          <!--Remarks-->
+          <div class="col-md-6" >
+            <div class="form-row text-right" >
+              <div class="col-md-4" >
+                <label for="remarks" >Remarks :</label ></div >
+              <div class="col-md-8" >
+                                <textarea id="remarks" class="form-control" data-th-field="*{remarks}"
+                                          rows="2" ></textarea >
+              </div >
+            </div >
+          </div >
+        </div >
+      </div >
+
+      <!--button-->
+      <div class="form-group" >
+        <!--Button-->
+        <div class="form-group col-md-12 col-sm-12 text-center flex-column " >
+          <!--Back Button-->
+          <a class="btn btn-dark" href="/invoice" tabindex="14" >
+            <i class="fas fa-arrow-circle-left" style="font-size: 20px" ></i >&nbsp;&nbsp;Back
+          </a >
+          <!--Save Button-->
+          <button class="btn btn-success ml-5" tabindex="12" type="submit" id="btnSubmit" >
+            <i class="fa fa-save " style="font-size: 20px" ></i >&nbsp;&nbsp;<span
+                data-th-text="${'Save'}"
+                id="submit" ></span >
+          </button >
+          <!--Cancel Button-->
+          <button class="btn btn-warning ml-5" tabindex="13" type="reset" >
+            <i class="far fa-times-circle" style="font-size: 20px" ></i >&nbsp;&nbsp;Cancel
+          </button >
+        </div >
+      </div >
+    </form >
+  </div >
+</div >
+
+<input type="hidden" data-th-value="${ledgerItemURL}" id="ledgerItemURL" >
+<!--/* footer is */-->
+<div data-th-replace="~{fragments/footer :: footerFragment}" ></div >
+<!--/* script is included */-->
+<div data-th-replace="~{fragments/script :: scriptFragment}" ></div >
+<script data-th-src="@{/js/combo-box-search.js}" ></script >
+<script >
+    //removes the "active" class to .popup and .popup-content when the "Close" button is clicked
+    $("#close, .popup-overlay body").on("click", function () {
+        $(".popup-overlay, .popup-content").removeClass("active");
+        modalValueZero();
+    });
+
+    $(document).ready(function () {
+        $("#btnshow").hide();
+        ///*/**/*/
+        $("#item").select2({
+            data: $(this).val()
+        }).change(() => {
+            let finalUrl = $('#ledgerItemURL').val() + $("#item").val();
+            $.ajax({
+                type: 'GET',
+                url: finalUrl,
+                success: function (resp) {
+                    popUpDataSet(resp);
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+
+        });
+
+        $("#customer").select2({
+            data: $(this).val()
+        });
+        $("input[value='CASH']").prop('checked', true);
+        showHideContent();
+        $("input[value='NOT_PRINTED']").prop('checked', true);
+
+    });
+
+    let selectedInvoiceLedger = [];
+
+    function popUpDataSet(resp) {
+        $("#ledgerId").val(resp.id);
+        $("#itemName").val(resp.item.name);
+        $("#abQuantity").val(resp.quantity);
+        let date = resp.expiredDate[0] + '-' + resp.expiredDate[1] + '-' + resp.expiredDate[2];
+        $("#exDate").val(date);
+        $("#sellPriceModal").val(resp.sellPrice);
+        $(".popup-overlay, .popup-content").addClass("active");
+        addButtonDisable();
+    }
+
+    function addButtonDisable() {
+        let requestInputValue = $('#requestCount').val();
+        let discountRatio = $('#discountRatio').val();
+        if ((requestInputValue && discountRatio)) {
+            $("#addModal").show();
+        } else {
+            $("#addModal").hide();
+        }
+    }
+
+    $('#addModal').bind('click', function () {
+        let receivedLedgerItem = {};// ledgerItem
+        receivedLedgerItem.id = $("#ledgerId").val();
+        receivedLedgerItem.name = $("#itemName").val();
+        receivedLedgerItem.quantity = $("#abQuantity").val();
+        receivedLedgerItem.exDate = $("#exDate").val();
+        receivedLedgerItem.sellPrice = $("#sellPriceModal").val();
+        receivedLedgerItem.requestCount = $("#requestCount").val();
+        receivedLedgerItem.discountAmount = $("#discountPrice").val();
+        receivedLedgerItem.totalModal = $("#totalModal").val();
+        selectedInvoiceLedger.push(receivedLedgerItem);
+        $(".popup-overlay, .popup-content").removeClass("active");
+        optionElementRemove('#item');
+        itemAddToItemSelectTable();
+        modalValueZero();
+    });
+
+    function itemAddToItemSelectTable() {
+        let html = "";
+        for (let i = 0; i < selectedInvoiceLedger.length; i++) {
+            html += tableRowCreate(i, selectedInvoiceLedger[i]);
+        }
+
+        $("#myTable tbody ").html(html);
+        totalPrice();
+    }
+
+    function tableRowCreate(id, invoiceLedger) {
+        return `<tr >
+                      <th >${id + 1}
+                      <input type="hidden" id="id${id}" class="form-control"  name="invoiceLedgers[${id}].ledger.id" value="${invoiceLedger.id}">
+                      </th >
+                      <th >
+                      <input type="text" id="na${id}" class="form-control" value="${invoiceLedger.name}" readonly>
+                      </th >
+                      <th >
+                      <input type="text" id="ex${id}" class="form-control" value="${invoiceLedger.exDate}" readonly>
+                      </th >
+                      <th >
+                      <input type="number" id="aq${id}" class="form-control" value="${invoiceLedger.quantity}" readonly>
+                      </th >
+                      <th >
+                      <input type="number" id="sp${id}" class="form-control" name="invoiceLedgers[${id}].sellPrice" value="${invoiceLedger.sellPrice}" readonly>
+                      </th >
+                      <th >
+                      <input type="number" id="rq${id}" class="form-control" onchange="lineTotalCalculateByLine(this)"  onkeyup="lineTotalCalculateByLine(this)" name="invoiceLedgers[${id}].quantity" value="${invoiceLedger.requestCount}">
+                      </th >
+                      <th >
+                      <input type="number" id="da${id}" class="form-control discountTotal" name="invoiceLedgers[${id}].discountAmount" value="${invoiceLedger.discountAmount}" readonly>
+                      </th >
+                      <th >
+                      <input type="number" id="lt${id}" class="form-control lineTotal" name="invoiceLedgers[${id}].lineTotal" value="${invoiceLedger.totalModal}" readonly>
+                      </th >
+                      <th>
+                      <button type="button" id="rm${id}" class="btn btn-danger" onclick="removeItem(this)">Remove</button>
+                      </th>
+                    </tr >`
+    }
+
+    function removeItem(obj) {
+        let selectedFiledId = obj.getAttribute('id').slice(2);
+        //id,name,sellPrice,abQut,exDate
+        $("#item").append(optionTagAdd(
+            $(`#id${selectedFiledId}`).val(),
+            $(`#na${selectedFiledId}`).val(),
+            $(`#sp${selectedFiledId}`).val(),
+            $(`#aq${selectedFiledId}`).val(),
+            $(`#ex${selectedFiledId}`).val()));
+        selectedInvoiceLedger = selectedInvoiceLedger.filter(function (obj) {
+            return obj.id !== $(`#id${selectedFiledId}`).val();
+        })
+        document.getElementById("myTable").deleteRow(obj.parentNode.parentNode.rowIndex);
+        totalPrice();
+    }
+
+    //calculate line total
+    function lineTotalCalculateByLine(obj) {
+        let selectedFiledId = obj.getAttribute('id').slice(2);
+        let quantity = $(`#aq${selectedFiledId}`).val();
+        if (quantity >= obj.value) {
+            let price = $(`#sp${selectedFiledId}`).val();
+            $(`#lt${selectedFiledId}`).val(price * obj.value);
+            totalPrice();
+        } else {
+            swal({
+                title: "Please check the quantity ",
+                icon: "warning",
+            });
+        }
+    }
+
+    function totalPrice() {
+        let lineTotal = document.getElementsByClassName("lineTotal");
+        let totalValue = 0;
+        for (let i = 0; i < lineTotal.length; i++) {
+            totalValue += parseFloat(lineTotal[i].value);
+        }
+        $("#total").val(totalValue);
+        $("#totalAmount").val(totalValue);
+        let discountTotal = document.getElementsByClassName("discountTotal");
+        let discountValue = 0;
+        for (let i = 0; i < discountTotal.length; i++) {
+            discountValue += parseFloat(discountTotal[i].value);
+        }
+        $("#discountAmount").val(discountValue);
+    }
+
+    //modal total mount calculate
+    $("#requestCount").bind('keyup', function () {
+        totalPriceCard();
+    });
+
+    function totalPriceCard() {
+        let requestCountVal = $("#requestCount").val();
+        let abQuantity = $("#abQuantity").val();
+
+        if (parseFloat(abQuantity) >= parseFloat(requestCountVal) && !isNaN(requestCountVal)) {
+            $("#totalModal").val(parseFloat($("#sellPriceModal").val()) * parseFloat(requestCountVal));
+            addButtonDisable();
+        } else {
+            swal({
+                title: "Request more than available or less than avalilable  ",
+                icon: "warning",
+            });
+        }
+
+        discountRatio();
+    }
+
+    //modal all values zero
+    function modalValueZero() {
+        $("#ledgerId").val(0);
+        $("#itemName").val('');
+        $("#abQuantity").val(0);
+        $("#exDate").val('');
+        $("#discountRatio").val('');
+        $("#discountPrice").val(0.00);
+        $("#sellPriceModal").val(0.00);
+        $("#requestCount").val('');
+        $("#totalModal").val(0.00);
+    }
+
+    $("input[name='paymentMethod']").bind('change', function () {
+        showHideContent();
+    });
+
+    function showHideContent() {
+        let paymentMethodValue = $("input[name='paymentMethod']:checked").val();
+        if (paymentMethodValue === 'CASH') {
+            $("#bankNameBlock").hide();
+            $("#cashPaymentBlock").show();
+            $("#bankName, #cardNumber").prop('required', false);
+            $("#amountTendered, #balance").prop('required', true);
+        } else {
+            $("#cashPaymentBlock").hide();
+            $("#bankNameBlock").show();
+            $("#amountTendered, #balance").prop('required', false);
+            $("#bankName, #cardNumber").prop('required', true);
+        }
+    }
+
+    $('#discountRatio').bind('change', function () {
+        discountRatio();
+    });
+
+    function discountRatio() {
+        let requestCount = $("#requestCount").val();
+        if (!requestCount) {
+            swal({
+                title: "Please Select Request Count",
+                icon: "warning",
+            });
+        }
+        let discountRatio = parseFloat($("#discountRatio").find('option:selected').text());
+        if (!isNaN(discountRatio)) {
+            let total = parseFloat($("#totalModal").val());
+            let discountAmount = total * discountRatio / 100;
+            $("#totalModal").val(total - discountAmount);
+            $("#discountPrice").val(discountAmount);
+        }
+        addButtonDisable();
+    }
+
+    $("#amountTendered").bind('keyup', function () {
+
+        let tenderedAmount = parseFloat($(this).val());
+        let totalAmount = parseFloat($("#totalAmount").val());
+
+        console.log(tenderedAmount + " " + totalAmount);
+
+        if (tenderedAmount < totalAmount) {
+            $("#balance").addClass("bg-danger");
+            $("#amountTendered").addClass("bg-danger");
+            $("#btnSubmit").hide();
+        } else {
+            $("#amountTendered").removeClass("bg-danger").addClass("bg-success");
+            $("#balance").val(tenderedAmount - totalAmount).removeClass("bg-danger").addClass("bg-success");
+            $("#btnSubmit").show();
+        }
+        if (isNaN($("#balance").val())) {
+            $("#balance").addClass("bg-danger");
+            $("#amountTendered").addClass("bg-danger");
+            $("#btnSubmit").hide();
+        }
+
+    });
+
+    //option tag remove
+    let optionElementRemove = (id) => {
+        let selectedValue = $(id).val();
+        let selectedItemId = `${id} option[value='${selectedValue}']`;
+        $(selectedItemId).remove();
+    }
+
+    //option tag add
+    function optionTagAdd(id, name, sellPrice, abQut, exDate) {
+        return `<option value="${id}">
+                      Item Name: ${name}  Sell Price : {sellPrice}
+                      Available quantity : ${abQut}  Expired Date : ${exDate}
+                    </option>`;
+    }
+
+</script >
+</body >
+</html >
+
+
+
+
+
+
+
+@Controller
+@RequestMapping( "/invoice" )
+public class InvoiceController {
+  private final InvoiceService invoiceService;
+  private final CustomerService customerService;
+  private final LedgerService ledgerService;
+  private final DateTimeAgeService dateTimeAgeService;
+  private final DiscountRatioService discountRatioService;
+  private final MakeAutoGenerateNumberService makeAutoGenerateNumberService;
+  private final TwilioMessageService twilioMessageService;
+  private final ItemService itemService;
+
+  public InvoiceController(InvoiceService invoiceService, CustomerService customerService,
+                           LedgerService ledgerService, DateTimeAgeService dateTimeAgeService,
+                           DiscountRatioService discountRatioService,
+                           MakeAutoGenerateNumberService makeAutoGenerateNumberService,
+                           TwilioMessageService twilioMessageService, ItemService itemService) {
+    this.invoiceService = invoiceService;
+    this.customerService = customerService;
+    this.ledgerService = ledgerService;
+    this.dateTimeAgeService = dateTimeAgeService;
+    this.discountRatioService = discountRatioService;
+    this.makeAutoGenerateNumberService = makeAutoGenerateNumberService;
+    this.twilioMessageService = twilioMessageService;
+    this.itemService = itemService;
+  }
+
+  @GetMapping
+  public String invoice(Model model) {
+    model.addAttribute("invoices",
+                       invoiceService.findByCreatedAtIsBetween(dateTimeAgeService.dateTimeToLocalDateStartInDay(dateTimeAgeService.getPastDateByMonth(3)), dateTimeAgeService.dateTimeToLocalDateEndInDay(LocalDate.now())));
+    model.addAttribute("firstInvoiceMessage", true);
+    return "invoice/invoice";
+  }
+
+  @GetMapping( "/search" )
+  public String invoiceSearch(@RequestAttribute( "startDate" ) LocalDate startDate,
+                              @RequestAttribute( "endDate" ) LocalDate endDate, Model model) {
+    model.addAttribute("invoices",
+                       invoiceService.findByCreatedAtIsBetween(dateTimeAgeService.dateTimeToLocalDateStartInDay(startDate), dateTimeAgeService.dateTimeToLocalDateEndInDay(endDate)));
+    model.addAttribute("firstInvoiceMessage", true);
+    return "invoice/invoice";
+  }
+
+  private String common(Model model, Invoice invoice) {
+    model.addAttribute("invoice", invoice);
+    model.addAttribute("invoicePrintOrNots", InvoicePrintOrNot.values());
+    model.addAttribute("paymentMethods", PaymentMethod.values());
+    model.addAttribute("customers", customerService.findAll());
+    model.addAttribute("discountRatios", discountRatioService.findAll());
+    model.addAttribute("ledgerItemURL", MvcUriComponentsBuilder
+        .fromMethodName(LedgerController.class, "findId", "")
+        .build()
+        .toString());
+    //send not expired and not zero quantity
+    model.addAttribute("ledgers", ledgerService.findAll()
+        .stream()
+        .filter(x -> 0 < Integer.parseInt(x.getQuantity()) && x.getExpiredDate().isAfter(LocalDate.now())
+            && !itemService.findById(x.getItem().getId()).getProductionRetail().equals(ProductionRetail.BULK))
+        .collect(Collectors.toList()));
+    return "invoice/addInvoice";
+
+  }
+
+  @GetMapping( "/add" )
+  public String getInvoiceForm(Model model) {
+    return common(model, new Invoice());
+  }
+
+  @GetMapping( "/{id}" )
+  public String viewDetails(@PathVariable Integer id, Model model) {
+    Invoice invoice = invoiceService.findById(id);
+    model.addAttribute("invoiceDetail", invoice);
+    model.addAttribute("customerDetail", invoice.getCustomer());
+    return "invoice/invoice-detail";
+  }
+
+  @PostMapping
+  public String persistInvoice(@Valid @ModelAttribute Invoice invoice, BindingResult bindingResult, Model model) {
+    if ( bindingResult.hasErrors() ) {
+      return common(model, invoice);
+    }
+    if ( invoice.getId() == null ) {
+      if ( invoiceService.findByLastInvoice() == null ) {
+        //need to generate new one
+        invoice.setCode("JNSI" + makeAutoGenerateNumberService.numberAutoGen(null).toString());
+      } else {
+
+        //if there is customer in db need to get that customer's code and increase its value
+        String previousCode = invoiceService.findByLastInvoice().getCode().substring(4);
+        invoice.setCode("JNSI" + makeAutoGenerateNumberService.numberAutoGen(previousCode).toString());
+      }
+    }
+    invoice.setInvoiceValidOrNot(InvoiceValidOrNot.VALID);
+    List< InvoiceLedger > invoiceLedgers = new ArrayList<>();
+
+    invoice.getInvoiceLedgers().forEach(x -> {
+      x.setInvoice(invoice);
+      invoiceLedgers.add(x);
+    });
+    invoice.setInvoiceLedgers(invoiceLedgers);
+    Invoice saveInvoice = invoiceService.persist(invoice);
+
+    for ( InvoiceLedger invoiceLedger : saveInvoice.getInvoiceLedgers() ) {
+      Ledger ledger = ledgerService.findById(invoiceLedger.getLedger().getId());
+      String quantity = invoiceLedger.getQuantity();
+      int availableQuantity = Integer.parseInt(ledger.getQuantity());
+      int sellQuantity = Integer.parseInt(quantity);
+      ledger.setQuantity(String.valueOf(availableQuantity - sellQuantity));
+      ledgerService.persist(ledger);
+    }
+    if ( saveInvoice.getCustomer() != null ) {
+      try {
+        String mobileNumber = saveInvoice.getCustomer().getMobile().substring(1, 10);
+        twilioMessageService.sendSMS("+94" + mobileNumber, "Thank You Come Again \n JN_Super ");
+      } catch ( Exception e ) {
+        e.printStackTrace();
+      }
+    }
+    return "redirect:/invoice/fileView/" + saveInvoice.getId();
+  }
+
+
+  @GetMapping( "/remove/{id}" )
+  public String removeInvoice(@PathVariable( "id" ) Integer id) {
+    Invoice invoice = invoiceService.findById(id);
+    invoice.setInvoiceValidOrNot(InvoiceValidOrNot.NOTVALID);
+    invoiceService.persist(invoice);
+    return "redirect:/invoice";
+  }
+
+  @GetMapping( value = "/file/{id}", produces = MediaType.APPLICATION_PDF_VALUE )
+  public ResponseEntity< InputStreamResource > invoicePrint(@PathVariable( "id" ) Integer id) throws DocumentException {
+    var headers = new HttpHeaders();
+    headers.add("Content-Disposition", "inline; filename=invoice.pdf");
+    InputStreamResource pdfFile = new InputStreamResource(invoiceService.createPDF(id));
+
+    return ResponseEntity
+        .ok()
+        .headers(headers)
+        .contentType(MediaType.APPLICATION_PDF)
+        .body(pdfFile);
+  }
+
+  @GetMapping( "/fileView/{id}" )
+  public String fileRequest(@PathVariable( "id" ) Integer id, Model model, HttpServletRequest request) {
+    model.addAttribute("pdfFile", MvcUriComponentsBuilder
+        .fromMethodName(InvoiceController.class, "invoicePrint", id)
+        .toUriString());
+    model.addAttribute("redirectUrl", MvcUriComponentsBuilder
+        .fromMethodName(InvoiceController.class, "getInvoiceForm", "")
+        .toUriString());
+    return "invoice/pdfSilentPrint";
+  }
+
+}
+
+
+//save swal
+<script>
+    $('#form').submit(function(e) {
+        e.preventDefault();
+
+        var confirmmassage =
+
+            "Company Name "+document.getElementById("name").value+
+            "\nBRN  : " + document.getElementById("brn").value  +
+            "\nSupplier Name : " + document.getElementById("suppliername").value+
+            "\nMobile (Supplier) : " + document.getElementById("contactOne").value+
+            "\nCompany Hotline : " + document.getElementById("contactTwo").value+
+            "\nCompany Email : " + document.getElementById("email").value+
+            "\nCompany Address : " + document.getElementById("address").value;
+
+        swal({
+            title: "Are you sure?",
+            text: confirmmassage,
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+
+                    swal("Processing.................");
+                    document.getElementById('form').submit();
+
+                } else {
+                    swal("You Cancel the submission!");
+                }
+            });
+
+    });
+
+    $(document).ready(function () {
+            let message = '';
+            $('.error').each(function (index) {
+                message += $(this).text();
+            });
+
+            if (message) {
+                setTimeout(function () {
+                    swal({
+                        title: "System Errors  ",
+                        icon: "warning",
+                        text: message,
+                    });
+                }, 500);
+            }
+        }
+    );
+</script>
+
+
+
+
+//sup control
+//1/3/7 supplierItemOne.setItemSupplierStatus(supplierItem.getItemSupplierStatus());
+    //1/3/8 supplierItemOne.setLiveDead(supplierItem.getLiveDead());
