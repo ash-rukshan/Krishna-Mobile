@@ -98,10 +98,10 @@ http.
                    .antMatchers("/invoice/**").hasAnyRole("MANAGER","CASHIER")
                .anyRequest()
                .authenticated()
+        .and()
        // Login form
-       .formLogin(
-           formLogin ->
-               formLogin
+       .formLogin()
+
                    .loginPage("/login")
                    .loginProcessingUrl("/login")
                    //Username and password for validation
@@ -109,26 +109,26 @@ http.
                    .passwordParameter("password")
                    .successHandler(customAuthenticationSuccessHandler())
                    .failureUrl("/login?error")
-                 )
+
        //Logout controlling
-       .logout(
-           logout ->
-               logout
+       .logout()
+
                    .logoutUrl("/logout")
                    .logoutSuccessHandler(customLogoutSuccessHandler())
                    .deleteCookies("JSESSIONID")
                    .invalidateHttpSession(true)
-                   .clearAuthentication(true))
+                   .clearAuthentication(true)
+        .and()
        //session management
-       .sessionManagement(
-           sessionManagement ->
-               sessionManagement
+       .sessionManagement()
+
                    .sessionFixation().migrateSession()
                    .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                    .invalidSessionUrl("/login")
                    .maximumSessions(6)
                    .expiredUrl("/logout")
-                   .sessionRegistry(sessionRegistry()))
+                   .sessionRegistry(sessionRegistry())
+        .and()
        //Cross site disable
    .csrf(AbstractHttpConfigurer::disable)
    .exceptionHandling().and()
