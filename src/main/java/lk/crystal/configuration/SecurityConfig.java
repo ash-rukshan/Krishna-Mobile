@@ -78,11 +78,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // For developing easy to give permission all lin
 // {"ADMIN","PROCUREMENT_MANAGER","CASHIER","MANAGER","HR_MANAGER","ACCOUNT_MANAGER"}
 // noraml man security desable karanna kiwwoth pahala tika comment karala ihala tika uncomment ka
-    //security active karanne eke anik pettha
-http.
-       authorizeRequests ()
-               .antMatchers(ALL_PERMIT_URL).permitAll()
-               .antMatchers("/category/**").hasAnyRole("ADMIN","PROCUREMENT_MANAGER","CASHIER","MANAGER")
+        //security active karanne eke anik pettha
+
+        http
+                .csrf().disable().
+                authorizeRequests()
+                .antMatchers(ALL_PERMIT_URL).permitAll()
+                .antMatchers("/category/**").hasAnyRole("ADMIN", "PROCUREMENT_MANAGER", "CASHIER", "MANAGER")
 
                 .antMatchers("/discountRatio/**").hasAnyRole("PROCUREMENT_MANAGER", "MANAGER")
                 .antMatchers("/brand/**").hasAnyRole("PROCUREMENT_MANAGER", "MANAGER")
