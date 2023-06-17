@@ -79,7 +79,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 // {"ADMIN","PROCUREMENT_MANAGER","CASHIER","MANAGER","HR_MANAGER","ACCOUNT_MANAGER"}
 // noraml man security desable karanna kiwwoth pahala tika comment karala ihala tika uncomment ka
     //security active karanne eke anik pettha
-http.authorizeRequests(
+http.
        authorizeRequests ()
                .antMatchers(ALL_PERMIT_URL).permitAll()
                .antMatchers("/category/**").hasAnyRole("ADMIN","PROCUREMENT_MANAGER","CASHIER","MANAGER")
