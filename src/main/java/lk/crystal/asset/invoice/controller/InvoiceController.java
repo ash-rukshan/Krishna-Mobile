@@ -141,7 +141,11 @@ public class InvoiceController {
 
         invoice.setInvoiceValidOrNot(InvoiceValidOrNot.VALID);
 
+        System.out.println(invoice.getInvoicePrintOrNot());
+
         Invoice saveInvoice = invoiceService.persist(invoice);
+
+        System.out.println(saveInvoice.getInvoicePrintOrNot());
 
         for (InvoiceLedger invoiceLedger : saveInvoice.getInvoiceLedgers()) {
             Ledger ledger = ledgerService.findById(invoiceLedger.getLedger().getId());
@@ -153,13 +157,16 @@ public class InvoiceController {
         }
         if (saveInvoice.getCustomer() != null) {
             try {
-                String mobileNumber = saveInvoice.getCustomer().getMobile().substring(1, 10);
-                twilioMessageService.sendSMS("+94" + mobileNumber, "Thank You Come Again \n Krishna Mobile ");
+                // String mobileNumber = saveInvoice.getCustomer().getMobile().substring(1, 10);
+                // twilioMessageService.sendSMS("+94" + mobileNumber, "Thank You Come Again \n Krishna Mobile ");
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return "redirect:/invoice/fileView/" + saveInvoice.getId();
+        if(saveInvoice.getInvoicePrintOrNot().equals(InvoicePrintOrNot.NOT_PRINTED)){
+    return "redirect:/invoice/add";
+}else {
+        return "redirect:/invoice/fileView/" + saveInvoice.getId();}
     }
 
 

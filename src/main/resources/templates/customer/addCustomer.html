@@ -130,7 +130,7 @@
                                 <!--Nic-->
                                 <div class="col-md-3">
                                     <label class="control-label" for="nic">NIC No :</label>
-                                    <input id="nic"  data-th-field="*{nic}" class="form-control form-control-sm" tabindex="5" type="text" name="nic" minlength="10" maxlength="12"/>
+                                    <input id="nic"  data-th-field="*{nic}" class="form-control form-control-sm" tabindex="5" type="text" name="nic" minlength="10" maxlength="12" data-th-readonly="${ExCustomer != null}"/>
                                     <span class="error" id="nicError"   data-th-errors="*{nic}"
                                           data-th-if="${#fields.hasErrors('nic')}">Error NIC Number</span>
                                 </div>

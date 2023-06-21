@@ -43,7 +43,7 @@
                         <!--Name-->
                         <div class="form-group col-sm-4">
                             <label for="name">Name :</label>
-                            <input type="text" class="form-control" placeholder="Brand name" id="name"  data-th-field="*{name}" tabindex="4" required/>
+                            <input type="text" class="form-control" placeholder="Brand name"  data-th-value="${name}" data-th-name="${name}" tabindex="4" required/>
                             <span id="nameError" th:errors="*{name}" th:if="${#fields.hasErrors('name')}" class="error">Error Name</span>
                         </div>
 

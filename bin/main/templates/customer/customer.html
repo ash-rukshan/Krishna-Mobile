@@ -46,7 +46,7 @@
                                 <tbody>
                                 <tr   data-th-each="customer, rowCount : ${customers}">
                                     <th  data-th-text="${rowCount.count}"></th>
-                                    <th  data-th-text="${customer.title}+${'. '}+${customer.name}"></th>
+                                    <th  data-th-text="${customer.title.title}+${'. '}+${customer.name}"></th>
                                     <th  data-th-text="${customer.code}"></th>
                                     <th  data-th-text="${customer.mobile}"></th>
                                     <th  data-th-text="${customer.address}"></th>

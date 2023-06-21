@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum InvoicePrintOrNot {
-  PRINTED("Don't Print"),
-  NOT_PRINTED("Print");
+  PRINTED("Print"),
+  NOT_PRINTED("Don't Print");
   private final String invoicePrintOrNot;
 }

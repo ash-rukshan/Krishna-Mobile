@@ -80,7 +80,7 @@ public  class CustomerController implements AbstractController<Customer, Integer
 
         
             // return "customer/addCustomer";
-            return commonThings(model, customer, true);
+            return commonThings(model, customer2, true);
 
         }
 
