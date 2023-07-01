@@ -71,18 +71,18 @@ public  class CustomerController implements AbstractController<Customer, Integer
             return commonThings(model, customer, true);
         }
         
-// //NIC Validator
-        if (customerService.findByNic(nic) != null) {
+//NIC Validator
+        // if (customerService.findByNic(nic) != null) {
 
-            Customer customer2 = customerService.findByNic(nic);
+        //     Customer customer2 = customerService.findByNic(nic);
 
-            model.addAttribute("ExCustomer", customer2);
+        //     model.addAttribute("ExCustomer", customer2);
 
         
-            // return "customer/addCustomer";
-            return commonThings(model, customer2, true);
+        //     // return "customer/addCustomer";
+        //     return commonThings(model, customer2, true);
 
-        }
+        // }
 
 //phone number length validator
         if (customer.getMobile() != null) {
