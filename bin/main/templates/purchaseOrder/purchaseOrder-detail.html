@@ -27,12 +27,19 @@
           <!--Form Name-->
           <div class="col">
             <h5 class="text text-right">
-              <span data-th-text="${purchaseOrderDetail.supplier.name +' - '+purchaseOrderDetail.code }"></span>
+              <span data-th-text= "${purchaseOrderDetail.supplier.name +' - '+purchaseOrderDetail.code }"></span>
             </h5>
           </div>
         </div >
       </div >
       <!--details-->
+      <div id="purchaseOrder">
+        <div class="col-md-5">
+          <h5 class="text text-right">
+            <h5>Purchase Order  -  <span data-th-text="${purchaseOrderDetail.code}"></span></h5>
+            <h5><span data-th-text= "${purchaseOrderDetail.supplier.name}"></span></h5>
+          </h5>
+        </div>
       <div data-th-fragment="purchaseOrderDetailsFragment" class="container-fluid formBorder" >
 
           <div class="formManagement border-info mb-4 mt-4" >
@@ -40,6 +47,7 @@
             <div class="form-group collapse" id="supplierDetail" >
               <div class="card card-body" >
               <div class="row">
+              
                   <!--Left Side-->
                   <div class="form-group col-md-6 col-sm-6 text-left flex-column" >
                     <!--code-->
@@ -188,6 +196,7 @@
               </div >
               </div>
             </div >
+          </div>
             <!--Back Button-->
             <div class="form-group col-md-12 col-sm-12 text-center flex-column " >
               <a href="javascript:history.back()" >
@@ -195,6 +204,9 @@
                   <i class="fas fa-arrow-circle-left" style="font-size: 15px" ></i >&nbsp; &nbsp;Back
                 </button >
               </a >
+              <button class="btn btn-success" type="button" id="btnPrintResult">
+                <i class="fa fa-save" style="font-size: 20px"></i> Print
+              </button>
             </div >
           </div >
 
@@ -205,5 +217,11 @@
     <div data-th-replace="~{fragments/script :: scriptFragment}" ></div >
   </div>
 </div>
+<script>
+  $("#btnPrintResult").click(function () {
+    $("#purchaseOrder").addClass("mt-3 pt-3")
+    printContent("purchaseOrder")
+  })
+</script>
 </body >
 </html >
