@@ -572,6 +572,8 @@
 
                 let requestCountVal = $("#requestCount").val();
                 let abQuantity = $("#abQuantity").val();
+
+                // if (!(requestCountVal === null || typeof requestCountVal === "undefined" || requestCountVal === "")) {
                 //let lineDiscount = $("#lineDiscount").val();
 
               //  let lineDiscount = parseFloat($("#lineDiscount").find('option:selected').text());
@@ -580,14 +582,16 @@
 
                // $("#totalAmount").val(total - discountAmount);
               //  $("#discountAmount").val(discountAmount);
-
+              
                 if (parseFloat(abQuantity) >= parseFloat(requestCountVal)) {
                     $("#totalModal").val(total);
                    // $("#lineDiscountModel").val(discountAmount);
 
 
                     addButtonDisable();
-                } else {
+                }
+                
+                else {
                     swal({
                         title: "Request more than available   ",
                         icon: "warning",
@@ -597,7 +601,9 @@
                         $("#requestCount").val(abQuantity);
                     }
                 }
-            }
+            
+        }
+            
 
             //modal all values zero
             function modalValueZero() {

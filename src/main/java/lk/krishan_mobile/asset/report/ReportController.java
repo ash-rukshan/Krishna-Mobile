@@ -345,6 +345,7 @@ public class ReportController {
       itemNameAndItemCount.add(parameterCount);
     });
     model.addAttribute("itemNameAndItemCount", itemNameAndItemCount);
+  
 
   }
 

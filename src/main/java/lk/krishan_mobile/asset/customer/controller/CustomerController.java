@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -22,7 +23,7 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/customer")
-public  class CustomerController implements AbstractController<Customer, Integer> {
+public  class CustomerController {
     private final CustomerService customerService;
     private final MakeAutoGenerateNumberService makeAutoGenerateNumberService;
     private final EmailService emailService;
@@ -52,10 +53,10 @@ public  class CustomerController implements AbstractController<Customer, Integer
     }
 
 
-    @Override
-    public String findById(Integer id, Model model) {
-        return null;
-    }
+    // @Override
+    // public String findById(Integer id, Model model) {
+    //     return null;
+    // }
 
     @GetMapping("/add")
     public String addForm(Model model) {
@@ -63,12 +64,22 @@ public  class CustomerController implements AbstractController<Customer, Integer
     }
 
     @PostMapping(value = {"/save", "/update"})
+    public String persist(@Valid @ModelAttribute Customer customer, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
 
-    public String persist(@RequestParam("nic")String nic, Customer customer, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+    //     Customer dbCustomer = customerService.findByNic(customer.getNic());
 
-        if (bindingResult.hasErrors()) {
-            return commonThings(model, customer, true);
-        }
+    //     if(dbCustomer != null){
+    //             ObjectError error = new ObjectError("customer",
+    //                                       "There is already in the system. <br>System message -->");
+    //   bindingResult.addError(error);
+
+    //   model.addAttribute("ExCustomer", dbCustomer);
+    //   return commonThings(model, dbCustomer, true);
+    //     }
+
+    //     if (bindingResult.hasErrors()) {
+    //         return commonThings(model, customer, true);
+    //     }
         
 //NIC Validator
         // if (customerService.findByNic(nic) != null) {
@@ -163,11 +174,11 @@ public  class CustomerController implements AbstractController<Customer, Integer
         return "customer/customer-detail";
     }
 
-    @Override
-    public String persist(@Valid Customer e, BindingResult bindingResult, RedirectAttributes redirectAttributes,
-            Model model) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'persist'");
-    }
+   
+    // public String persist(@Valid Customer e, BindingResult bindingResult, RedirectAttributes redirectAttributes,
+    //         Model model) {
+    //     // TODO Auto-generated method stub
+    //     throw new UnsupportedOperationException("Unimplemented method 'persist'");
+    // }
 
 }
