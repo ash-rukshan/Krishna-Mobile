@@ -66,20 +66,20 @@ public  class CustomerController {
     @PostMapping(value = {"/save", "/update"})
     public String persist(@Valid @ModelAttribute Customer customer, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
 
-    //     Customer dbCustomer = customerService.findByNic(customer.getNic());
+        Customer dbCustomer = customerService.findByNic(customer.getNic());
 
-    //     if(dbCustomer != null){
-    //             ObjectError error = new ObjectError("customer",
-    //                                       "There is already in the system. <br>System message -->");
-    //   bindingResult.addError(error);
+        if(dbCustomer != null){
+                ObjectError error = new ObjectError("customer",
+                                          "There is already in the system. <br>System message -->");
+      bindingResult.addError(error);
 
     //   model.addAttribute("ExCustomer", dbCustomer);
-    //   return commonThings(model, dbCustomer, true);
-    //     }
+      return commonThings(model, customer, true);
+        }
 
-    //     if (bindingResult.hasErrors()) {
-    //         return commonThings(model, customer, true);
-    //     }
+        if (bindingResult.hasErrors()) {
+            return commonThings(model, customer, true);
+        }
         
 //NIC Validator
         // if (customerService.findByNic(nic) != null) {

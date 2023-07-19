@@ -16,4 +16,5 @@ public class ParameterCount {
     private Integer count;
     private BigDecimal itemPrice;
     private long itemSellCount;
+    private long itemSellPrice;
 }
