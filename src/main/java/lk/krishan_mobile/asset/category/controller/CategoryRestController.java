@@ -34,26 +34,26 @@ public class CategoryRestController {
         Category category = new Category();
         category.setMainCategory(MainCategory.valueOf(mainCategory));
 
-
-        //MappingJacksonValue
+        // MappingJacksonValue
         List<Category> categories = categoryService.search(category).stream()
                 .filter(x -> LiveDead.ACTIVE.equals(x.getLiveDead()))
                 .collect(Collectors.toList());
-        //Create new mapping jackson value and set it to which was need to filter
+        // Create new mapping jackson value and set it to which was need to filter
         MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(categories);
 
-        //simpleBeanPropertyFilter :-  need to give any id to addFilter method and created filter which was mentioned
+        // simpleBeanPropertyFilter :- need to give any id to addFilter method and
+        // created filter which was mentioned
         // what parameter's necessary to provide
         SimpleBeanPropertyFilter simpleBeanPropertyFilter = SimpleBeanPropertyFilter
                 .filterOutAllExcept("id", "name");
-        //filters :-  set front end required value to before filter
+        // filters :- set front end required value to before filter
 
         FilterProvider filters = new SimpleFilterProvider()
                 .addFilter("Category", simpleBeanPropertyFilter);
-        //Employee :- need to annotate relevant class with JsonFilter  {@JsonFilter("Employee") }
+        // Employee :- need to annotate relevant class with JsonFilter
+        // {@JsonFilter("Employee") }
         mappingJacksonValue.setFilters(filters);
 
         return mappingJacksonValue;
     }
 }
-

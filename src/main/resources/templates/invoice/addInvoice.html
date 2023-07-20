@@ -574,22 +574,17 @@
                 let abQuantity = $("#abQuantity").val();
 
                 // if (!(requestCountVal === null || typeof requestCountVal === "undefined" || requestCountVal === "")) {
-                //let lineDiscount = $("#lineDiscount").val();
 
-              //  let lineDiscount = parseFloat($("#lineDiscount").find('option:selected').text());
                 let total = parseFloat($("#sellPriceModal").val()) * parseFloat(requestCountVal);
-               // let discountAmount = total * lineDiscount / 100;
-
-               // $("#totalAmount").val(total - discountAmount);
-              //  $("#discountAmount").val(discountAmount);
+ ;
               
                 if (parseFloat(abQuantity) >= parseFloat(requestCountVal)) {
                     $("#totalModal").val(total);
-                   // $("#lineDiscountModel").val(discountAmount);
 
 
                     addButtonDisable();
                 }
+                
                 
                 else {
                     swal({
@@ -601,7 +596,7 @@
                         $("#requestCount").val(abQuantity);
                     }
                 }
-            
+                
         }
             
 

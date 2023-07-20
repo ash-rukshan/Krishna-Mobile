@@ -28,7 +28,9 @@ $(document).ready(function () {
         let nic = $(this).val();
         $("#dateOfBirth").val(calculateDateOfBirth(nic));
 //access our front-end gender*/
-        $("#gender").val(calculateGender(nic));
+// $("#gender").val(calculateGender(nic));
+
+        $("input:radio[name=gender]").filter(`[value=${calculateGender(nic)}]`).prop('checked', true);
 
     });
     /* Patient and employee Nic Validation - end*/
