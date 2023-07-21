@@ -86,7 +86,7 @@ let calculateDateOfBirth = function (nic) {
             day = day - 244;
             day = dateLengthValidate(day);
             month = 9;
-        } else if (day > 213) {
+        } else if (day > 213) { 
             day = day - 213;
             day = dateLengthValidate(day);
             month = 8;
@@ -301,11 +301,11 @@ $("#invoiceNumber").bind("keyup", function () {
 
 //colour change function --start
 let backgroundColourChangeGood = function (id) {
-    $(id).css('background-color', '#00FFFF');
+    $(id).css('background-color', '#76c893');
 };
 
 let backgroundColourChangeBad = function (id) {
-    $(id).css('background-color', '#FF00AA');
+    $(id).css('background-color', '#e5989b');
 };
 
 let backgroundColourChangeNothingToChange = function (id) {
