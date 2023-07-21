@@ -49,7 +49,7 @@
                   <th > ROP</th >
                   <th > Quantity</th >
                   <th > Price</th >
-                  <th data-sec-authorize="hasAnyAuthority('ROLE_MANAGER', 'ROLE_PROCUREMENT_MANAGER')"> Modify</th >
+                  <th > Modify</th >
                 </tr >
                 </thead >
                 <tbody >
@@ -59,7 +59,7 @@
                   <td  data-th-text="${ledger.item.rop}" ></td >
                   <td  data-th-text="${ledger.quantity}" ></td >
                   <td  data-th-text="${ledger.sellPrice}" ></td >
-                  <td data-sec-authorize="hasAnyAuthority('ROLE_MANAGER', 'ROLE_PROCUREMENT_MANAGER')">
+                  <td >
                     <a  data-th-href="${'/purchaseOrder/supplier/' + ledger.goodReceivedNote.purchaseOrder.supplier.id}"
                        class="btn btn-primary btn-sm" ><i
                           class="fa fa-folder-open" style="font-size: 15px" ></i >Purchase Order</a >

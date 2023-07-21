@@ -191,7 +191,7 @@
                         </div>
                     </div>-->
                     <!--Invoice Card-->
-                    <div class="dcard" data-sec-authorize="hasAnyAuthority('ROLE_MANAGER', 'ROLE_PROCUREMENT_MANAGER' ,'ROLE_ACCOUNT_MANAGER' , 'ROLE_CASHIER')">
+                    <div class="dcard" data-sec-authorize="hasAnyAuthority('ROLE_MANAGER', 'ROLE_PROCUREMENT_MANAGER', 'ROLE_CASHIER')">
                         <div class="card__inner">
                             <div class="card__face card__face--back">
                                 <div class="card__content">
@@ -245,6 +245,26 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="dcard" data-sec-authorize="hasAnyAuthority('ROLE_MANAGER', 'ROLE_ACCOUNT_MANAGER')">
+                        <div class="card__inner">
+                            <div class="card__face card__face--back">
+                                <div class="card__content">
+                                    <div class="card__header" style="background-image: linear-gradient(to bottom left, var(--light) 10%, var(--purple) 10%);" >
+                                        <img src="../img/payment.png" alt="" class="pp"/>
+                                        <h2>Payment</h2>
+                                    </div>
+                                    <div class="card__body">
+                                        <a href="/payment">
+                                            <div class="body">
+                                                <div class="text-dark">New Payment</div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <!--Purchase
                     <div class="col-xl-4 col-md-6" data-sec-authorize="hasAnyAuthority('ROLE_MANAGER', 'ROLE_PROCUREMENT_MANAGER')">
                         <div class="card bg-warning text-white mb-4">
@@ -282,7 +302,7 @@
                                             <th > ROP</th >
                                             <th > Quantity</th >
                                             <th > Price</th >
-                                            <th class="text-right"> Modify</th >
+                                            <th data-sec-authorize="hasAnyAuthority('ROLE_MANAGER', 'ROLE_PROCUREMENT_MANAGER')" class="text-right"> Modify</th >
                                         </tr >
                                         </thead >
                                         <tbody >
@@ -293,7 +313,7 @@
                                             <td data-th-text="${ledger.quantity}" ></td >
                                             <td data-th-text="${ledger.sellPrice}" ></td >
 
-                                            <td class="text-right">
+                                            <td data-sec-authorize="hasAnyAuthority('ROLE_MANAGER', 'ROLE_PROCUREMENT_MANAGER')" class="text-right">
                                                 <a data-th-href="${'/purchaseOrder/supplier/' + ledger.goodReceivedNote.purchaseOrder.supplier.id}"
                                                    class="btn btn-outline-secondary btn-sm" ><i
                                                         class="fa fa-folder-open" style="font-size: 15px" ></i > Purchase Order</a >
